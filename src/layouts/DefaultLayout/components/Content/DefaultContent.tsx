@@ -1,12 +1,13 @@
+import React, { FC, ReactElement, useLayoutEffect } from 'react'
+import styled from 'styled-components'
 import { Content } from 'antd/es/layout/layout'
 import { PrimaryButton } from 'components/atoms/PrimaryButton/PrimaryButton'
-import React, { FC, ReactElement, useLayoutEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { AppDispatch } from 'store/store'
-import { todoListSelector } from 'store/todoSlice/todo.selectors'
+import { CreateTodoModal } from 'components/organisms/CreateTodoModal/CreateTodoModal'
+import { useAppDispatch, useAppSelector } from 'hooks/hooks'
+import { isCreateModalOpen, todoListSelector } from 'store/todoSlice/todo.selectors'
 import { getTodos } from 'store/todoSlice/todo.thunks'
-import styled from 'styled-components'
-import { CardTodo } from 'components/organisms/TodoCard/CardTodo'
+import { TodoCard } from 'components/organisms/TodoCard/TodoCard'
+import { TodoListInterface } from 'types/types'
 
 const StyledContent = styled(Content)`
   display: flex;
@@ -21,38 +22,26 @@ const CardWrapper = styled.div`
   flex-wrap: wrap;
 `
 
-export interface TodoListInterface {
-  id: string,
-  title: string,
-  description: string,
-  createdAt: string,
-  status: string
-}
-
 export const DefaultContent: FC = (): ReactElement => {
-  const dispatch = useDispatch<AppDispatch>()
-  const todosList = useSelector(todoListSelector)
+  const dispatch = useAppDispatch()
+  const todosList = useAppSelector(todoListSelector)
+  const isModalOpen = useAppSelector(isCreateModalOpen)
 
   useLayoutEffect(() => {
     dispatch(getTodos())
-  }, [dispatch])
+  }, [dispatch, todosList])
 
   return (
     <StyledContent>
       <PrimaryButton text="Create new TODO" />
       <CardWrapper>
-        {todosList.map(({
-          id,
-          title,
-          description,
-          createdAt,
-          status
-        }: TodoListInterface): ReactElement => (
-          <React.Fragment key={id}>
-            <CardTodo id={id} title={title} description={description} createdAt={createdAt} status={status} />
+        {todosList.map((todo: TodoListInterface): ReactElement => (
+          <React.Fragment key={todo.id}>
+            <TodoCard {...todo} />
           </React.Fragment>
         ))}
       </CardWrapper>
+      <CreateTodoModal isOpen={isModalOpen} />
     </StyledContent>
   )
 }
