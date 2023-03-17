@@ -4,7 +4,7 @@ import React, { FC, ReactElement, useLayoutEffect } from 'react'
 import styled from 'styled-components'
 import { Content } from 'antd/es/layout/layout'
 import { PrimaryButton } from 'components/atoms/PrimaryButton/PrimaryButton'
-import { useAppDispatch, useAppSelector } from 'hooks/hooks'
+import { useAppDispatch, useAppSelector } from 'hooks/app-hooks'
 import { isCreateModalOpen, todoListSelector } from 'store/todoSlice/todo.selectors'
 import { getTodos } from 'store/todoSlice/todo.thunks'
 import { TodoListInterface } from 'types/types'
@@ -36,9 +36,7 @@ export const DefaultContent: FC = (): ReactElement => {
       <PrimaryButton text="Create new TODO" />
       <CardWrapper>
         {todosList.map((todo: TodoListInterface): ReactElement => (
-          <React.Fragment key={todo.id}>
-            <TodoCard {...todo} />
-          </React.Fragment>
+          <TodoCard key={todo.id} {...todo} />
         ))}
       </CardWrapper>
       <CreateTodoModal isOpen={isModalOpen} />

@@ -4,7 +4,7 @@ import { TodoListInterface } from 'types/types'
 
 export interface TodosState {
   todosList: TodoListInterface[];
-  isEditMode: boolean;
+  selectedTodoId: string | null;
   isTodosLoading: boolean;
   isCreateModalOpen: boolean;
   isUpdateModalOpen: boolean;
@@ -12,7 +12,7 @@ export interface TodosState {
 
 const initialState: TodosState = {
   todosList: [],
-  isEditMode: false,
+  selectedTodoId: null,
   isTodosLoading: false,
   isCreateModalOpen: false,
   isUpdateModalOpen: false,
@@ -21,14 +21,14 @@ const todosSlice = createSlice({
   name: 'todos',
   initialState,
   reducers: {
-    toggleEditMode: (state) => {
-      state.isEditMode = !state.isEditMode
-    },
     toggleCreateTodoModal: (state) => {
       state.isCreateModalOpen = !state.isCreateModalOpen
     },
     toggleUpdateTodoModal: (state) => {
       state.isUpdateModalOpen = !state.isUpdateModalOpen
+    },
+    getSelectedTodoId: (state, { payload }) => {
+      state.selectedTodoId = payload.id
     },
   },
   extraReducers: ({ addCase }) => {
@@ -85,6 +85,6 @@ const todosSlice = createSlice({
   },
 })
 
-export const { toggleEditMode, toggleCreateTodoModal, toggleUpdateTodoModal } = todosSlice.actions
+export const { getSelectedTodoId, toggleCreateTodoModal, toggleUpdateTodoModal } = todosSlice.actions
 
 export default todosSlice.reducer

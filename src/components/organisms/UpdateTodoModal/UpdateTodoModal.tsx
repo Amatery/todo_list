@@ -1,5 +1,6 @@
 import { Form, Input, Select } from 'antd'
 import { BasicModal } from 'components/molecules/BasicModal/BasicModal'
+import { descriptionInputRules, titleInputRules } from 'helpers/input-rules'
 import { useHandleModalForm } from 'hooks/useHandleModalForm'
 import React, { FC, ReactElement } from 'react'
 
@@ -18,7 +19,6 @@ export const UpdateTodoModal: FC<UpdateTodoModalProps> = ({
   status,
   isOpen
 }): ReactElement => {
-
   const [
     {
       form,
@@ -40,10 +40,10 @@ export const UpdateTodoModal: FC<UpdateTodoModalProps> = ({
     >
       <Form form={form} layout="vertical" onFinish={onUpdateTodoFormFinish} onValuesChange={handleFormChange}
             initialValues={{ id }}>
-        <Form.Item name="title" label="What you need TODO?" initialValue={title}>
+        <Form.Item name="title" label="What you need TODO?" initialValue={title} rules={titleInputRules}>
           <Input placeholder="Please enter TODO" />
         </Form.Item>
-        <Form.Item name="description" label="Description" initialValue={description}>
+        <Form.Item name="description" label="Description" initialValue={description} rules={descriptionInputRules}>
           <Input placeholder="Describe yours TODO" />
         </Form.Item>
         <Form.Item name="status" label="Status" initialValue={status}>

@@ -5,9 +5,9 @@ import { Card } from 'antd'
 import { EditOutlined, DeleteOutlined, CheckOutlined } from '@ant-design/icons'
 import { parseISO } from 'date-fns'
 import { CardMeta } from 'components/atoms/CardMeta/CardMeta'
-import { useAppDispatch, useAppSelector } from 'hooks/hooks'
-import { isUpdateModalOpen } from 'store/todoSlice/todo.selectors'
-import { toggleUpdateTodoModal } from 'store/todoSlice/todo.slice'
+import { useAppDispatch, useAppSelector } from 'hooks/app-hooks'
+import { selectedTodoId, isUpdateModalOpen } from 'store/todoSlice/todo.selectors'
+import { getSelectedTodoId, toggleUpdateTodoModal } from 'store/todoSlice/todo.slice'
 import { deleteTodo, updateTodo } from 'store/todoSlice/todo.thunks'
 import { TodoListInterface } from 'types/types'
 
@@ -40,6 +40,7 @@ const StyledDate = styled.div`
 
 export const TodoCard: FC<TodoListInterface> = ({ id, title, description, createdAt, status }): ReactElement => {
   const dispatch = useAppDispatch(deleteTodo)
+  const todoId = useAppSelector(selectedTodoId)
   const isModalOpen = useAppSelector(isUpdateModalOpen)
   const parsedDate = parseISO(createdAt).toDateString()
 
@@ -55,6 +56,7 @@ export const TodoCard: FC<TodoListInterface> = ({ id, title, description, create
   }
 
   const onEditClick = (): void => {
+    dispatch(getSelectedTodoId({ id }))
     dispatch(toggleUpdateTodoModal())
   }
 
@@ -77,7 +79,9 @@ export const TodoCard: FC<TodoListInterface> = ({ id, title, description, create
         <Status color={status}>{status}</Status>
         <StyledDate>Created: {parsedDate}</StyledDate>
       </StyledCard>
-      <UpdateTodoModal id={id} title={title} description={description} status={status} isOpen={isModalOpen} />
+      {id === todoId && (
+        <UpdateTodoModal id={id} title={title} description={description} status={status} isOpen={isModalOpen} />
+      )}
     </React.Fragment>
   )
 }

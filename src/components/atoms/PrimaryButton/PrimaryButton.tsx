@@ -1,4 +1,4 @@
-import { useAppDispatch } from 'hooks/hooks'
+import { useAppDispatch } from 'hooks/app-hooks'
 import React, { FC, ReactElement } from 'react'
 import { Button } from 'antd'
 import { toggleCreateTodoModal } from 'store/todoSlice/todo.slice'

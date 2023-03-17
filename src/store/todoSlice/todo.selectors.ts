@@ -5,8 +5,8 @@ export const todoListSelector = (state: RootState): TodoListInterface[] => {
   return state.todos.todosList
 }
 
-export const isTodoEditable = (state: RootState): boolean => {
-  return state.todos.isEditMode
+export const selectedTodoId = (state: RootState): string | null => {
+  return state.todos.selectedTodoId
 }
 export const isTodoListLoading = (state: RootState): boolean => {
   return state.todos.isTodosLoading
