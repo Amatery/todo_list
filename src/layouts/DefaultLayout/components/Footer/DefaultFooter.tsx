@@ -6,4 +6,4 @@ const StyledFooter = styled(Footer)`
   margin-top: 10px;
   background-color: #357534;
 `
-export const DefaultFooter: FC = (): ReactElement => <StyledFooter>Directed by Robert B. </StyledFooter>
+export const DefaultFooter: FC = (): ReactElement => <StyledFooter />
