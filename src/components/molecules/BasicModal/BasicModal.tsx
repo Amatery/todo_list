@@ -4,10 +4,15 @@ import { Modal } from 'antd'
 interface BasicModalProps {
   title: string;
   open: boolean;
-  onOk: () => void;
-  onCancel: () => void;
+  onOk: any;
+  onCancel: any;
   destroyOnClose: boolean;
   children: ReactElement;
+  okText?: string;
+  cancelText?: string;
+  okButtonProps?: {
+    disabled: boolean,
+  };
 }
 
 export const BasicModal: FC<BasicModalProps> = ({
@@ -17,9 +22,23 @@ export const BasicModal: FC<BasicModalProps> = ({
   onCancel,
   destroyOnClose,
   children,
+  okText = 'OK',
+  cancelText = 'Cancel',
+  okButtonProps = {
+    disabled: false,
+  },
 }): ReactElement => {
   return (
-    <Modal title={title} open={open} onOk={onOk} onCancel={onCancel} destroyOnClose={destroyOnClose}>
+    <Modal
+      title={title}
+      open={open}
+      onOk={onOk}
+      onCancel={onCancel}
+      destroyOnClose={destroyOnClose}
+      okText={okText}
+      cancelText={cancelText}
+      okButtonProps={okButtonProps}
+    >
       {children}
     </Modal>
   )

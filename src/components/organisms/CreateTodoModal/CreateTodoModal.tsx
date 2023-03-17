@@ -1,43 +1,33 @@
 import { Form, Input } from 'antd'
 import { BasicModal } from 'components/molecules/BasicModal/BasicModal'
-import { useAppDispatch } from 'hooks/hooks'
+import { descriptionInputRules, titleInputRules } from 'helpers/input-rules'
+import { useHandleModalForm } from 'hooks/useHandleModalForm'
 import React, { FC, ReactElement } from 'react'
-import { toggleCreateTodoModal } from 'store/todoSlice/todo.slice'
-import { postTodo } from 'store/todoSlice/todo.thunks'
-import { CreateTodoInterface } from 'types/types'
 
 interface CreateTodoModalProps {
   isOpen: boolean;
 }
 
 export const CreateTodoModal: FC<CreateTodoModalProps> = ({ isOpen }): ReactElement => {
-  const [form] = Form.useForm()
-  const dispatch = useAppDispatch()
-  const onOk = (): void => {
-    form.submit()
-    dispatch(toggleCreateTodoModal())
-  }
+  const [
+    { form, handleFormChange, onCreateTodoFormFinish, onOkClick, onCreateModalCancelClick, disableConfirmButton },
+  ] = useHandleModalForm()
 
-  const onCancel = (): void => {
-    dispatch(toggleCreateTodoModal())
-  }
-
-  const onFormFinish = ({ title, description }: CreateTodoInterface): void => {
-    dispatch(
-      postTodo({
-        title,
-        description,
-      }),
-    )
-    form.resetFields()
-  }
   return (
-    <BasicModal title="Create new TODO" open={isOpen} onOk={onOk} onCancel={onCancel} destroyOnClose>
-      <Form form={form} layout="vertical" onFinish={onFormFinish}>
-        <Form.Item name="title" label="What you need TODO?">
+    <BasicModal
+      title="Create new TODO"
+      open={isOpen}
+      onOk={onOkClick}
+      onCancel={onCreateModalCancelClick}
+      okText="Create TODO"
+      okButtonProps={{ disabled: disableConfirmButton }}
+      destroyOnClose
+    >
+      <Form form={form} layout="vertical" onFinish={onCreateTodoFormFinish} onFieldsChange={handleFormChange}>
+        <Form.Item name="title" label="What you need TODO?" rules={titleInputRules}>
           <Input placeholder="Please enter TODO" />
         </Form.Item>
-        <Form.Item name="description" label="Description">
+        <Form.Item name="description" label="Description" rules={descriptionInputRules}>
           <Input placeholder="Describe yours TODO" />
         </Form.Item>
       </Form>
