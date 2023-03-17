@@ -7,6 +7,7 @@ export interface TodosState {
   isEditMode: boolean;
   isTodosLoading: boolean;
   isCreateModalOpen: boolean;
+  isUpdateModalOpen: boolean;
 }
 
 const initialState: TodosState = {
@@ -14,6 +15,7 @@ const initialState: TodosState = {
   isEditMode: false,
   isTodosLoading: false,
   isCreateModalOpen: false,
+  isUpdateModalOpen: false,
 }
 const todosSlice = createSlice({
   name: 'todos',
@@ -24,6 +26,9 @@ const todosSlice = createSlice({
     },
     toggleCreateTodoModal: (state) => {
       state.isCreateModalOpen = !state.isCreateModalOpen
+    },
+    toggleUpdateTodoModal: (state) => {
+      state.isUpdateModalOpen = !state.isUpdateModalOpen
     },
   },
   extraReducers: ({ addCase }) => {
@@ -80,6 +85,6 @@ const todosSlice = createSlice({
   },
 })
 
-export const { toggleEditMode, toggleCreateTodoModal } = todosSlice.actions
+export const { toggleEditMode, toggleCreateTodoModal, toggleUpdateTodoModal } = todosSlice.actions
 
 export default todosSlice.reducer

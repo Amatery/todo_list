@@ -1,10 +1,14 @@
+import React, { FC, ReactElement } from 'react'
+import styled from 'styled-components'
 import { Card } from 'antd'
 import { EditOutlined, DeleteOutlined, CheckOutlined } from '@ant-design/icons'
+import { parseISO } from 'date-fns'
 import { CardMeta } from 'components/atoms/CardMeta/CardMeta'
-import { useAppDispatch } from 'hooks/hooks'
-import React, { FC, ReactElement } from 'react'
+import { UpdateTodoModal } from 'components/organisms/UpdateTodoModal/UpdateTodoModal'
+import { useAppDispatch, useAppSelector } from 'hooks/hooks'
+import { isUpdateModalOpen } from 'store/todoSlice/todo.selectors'
+import { toggleUpdateTodoModal } from 'store/todoSlice/todo.slice'
 import { deleteTodo, updateTodo } from 'store/todoSlice/todo.thunks'
-import styled from 'styled-components'
 import { TodoListInterface } from 'types/types'
 
 const StyledCard = styled(Card)`
@@ -36,6 +40,8 @@ const StyledDate = styled.div`
 
 export const TodoCard: FC<TodoListInterface> = ({ id, title, description, createdAt, status }): ReactElement => {
   const dispatch = useAppDispatch(deleteTodo)
+  const isModalOpen = useAppSelector(isUpdateModalOpen)
+  const parsedDate = parseISO(createdAt).toDateString()
 
   const onCheckClick = (): void => {
     dispatch(
@@ -48,25 +54,30 @@ export const TodoCard: FC<TodoListInterface> = ({ id, title, description, create
     )
   }
 
-  const onEditClick = (): void => {}
+  const onEditClick = (): void => {
+    dispatch(toggleUpdateTodoModal())
+  }
 
   const onDeleteClick = (id: string): void => {
     dispatch(deleteTodo({ id }))
   }
   return (
-    <StyledCard
-      bordered={false}
-      hoverable
-      cover={<img alt="TODO cover image" src={`${process.env.REACT_APP_TODO_IMAGE}`} />}
-      actions={[
-        <CheckOutlined key="check" onClick={onCheckClick} />,
-        <EditOutlined key="edit" onClick={onEditClick} />,
-        <DeleteOutlined key="delete" onClick={() => onDeleteClick(id)} />,
-      ]}
-    >
-      <CardMeta title={title} description={description} />
-      <Status color={status}>{status}</Status>
-      <StyledDate>{createdAt}</StyledDate>
-    </StyledCard>
+    <React.Fragment>
+      <StyledCard
+        bordered={false}
+        hoverable
+        cover={<img alt="TODO cover image" src={`${process.env.REACT_APP_TODO_IMAGE}`} />}
+        actions={[
+          <CheckOutlined key="check" onClick={onCheckClick} />,
+          <EditOutlined key="edit" onClick={onEditClick} />,
+          <DeleteOutlined key="delete" onClick={() => onDeleteClick(id)} />,
+        ]}
+      >
+        <CardMeta title={title} description={description} />
+        <Status color={status}>{status}</Status>
+        <StyledDate>Created: {parsedDate}</StyledDate>
+      </StyledCard>
+      <UpdateTodoModal id={id} title={title} description={description} status={status} isOpen={isModalOpen} />
+    </React.Fragment>
   )
 }
