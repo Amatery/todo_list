@@ -1,12 +1,12 @@
+import { CreateTodoModal } from 'components/organisms/CreateTodoModal/CreateTodoModal'
+import { TodoCard } from 'components/organisms/TodoCard/TodoCard'
 import React, { FC, ReactElement, useLayoutEffect } from 'react'
 import styled from 'styled-components'
 import { Content } from 'antd/es/layout/layout'
 import { PrimaryButton } from 'components/atoms/PrimaryButton/PrimaryButton'
-import { CreateTodoModal } from 'components/organisms/CreateTodoModal/CreateTodoModal'
 import { useAppDispatch, useAppSelector } from 'hooks/hooks'
 import { isCreateModalOpen, todoListSelector } from 'store/todoSlice/todo.selectors'
 import { getTodos } from 'store/todoSlice/todo.thunks'
-import { TodoCard } from 'components/organisms/TodoCard/TodoCard'
 import { TodoListInterface } from 'types/types'
 
 const StyledContent = styled(Content)`
@@ -29,7 +29,7 @@ export const DefaultContent: FC = (): ReactElement => {
 
   useLayoutEffect(() => {
     dispatch(getTodos())
-  }, [dispatch, todosList])
+  }, [dispatch])
 
   return (
     <StyledContent>

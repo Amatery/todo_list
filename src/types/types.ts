@@ -15,3 +15,10 @@ export interface ErrorNotificationInterface {
   message: string;
   field: string;
 }
+
+export interface UpdateTodoInterface {
+  id: string,
+  title: string,
+  description: string,
+  status: string
+}

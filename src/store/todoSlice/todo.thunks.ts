@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { notification } from 'antd'
 import { todoListRequests } from 'api/todos.requests'
-import { CreateTodoInterface, ErrorNotificationInterface, TodoListInterface } from 'types/types'
+import { notifications } from 'components/atoms/notifications/notifications'
+import { CreateTodoInterface, ErrorNotificationInterface, TodoListInterface, UpdateTodoInterface } from 'types/types'
 
 export const getTodos = createAsyncThunk(
   'todos/getTodos',
@@ -24,10 +24,7 @@ export const postTodo = createAsyncThunk(
       const { errorsMessages } = e.response.data
       // eslint-disable-next-line array-callback-return
       errorsMessages.map((e: ErrorNotificationInterface) => {
-        notification.error({
-          message: `Whops, something wrong with ${e.field} 😱😱😱`,
-          description: e.message
-        })
+        notifications.errorNotification(e)
       })
       throw e
     }
@@ -46,11 +43,15 @@ export const updateTodo = createAsyncThunk(
   'todos/updateTodo',
   async ({
     id,
+    title,
+    description,
     status
-  }: { id: string, status: string }): Promise<any> => {
-    await todoListRequests.todoUpdate(id, status)
+  }: UpdateTodoInterface): Promise<UpdateTodoInterface> => {
+    await todoListRequests.todoUpdate(id, title, description, status)
     return {
       id,
+      title,
+      description,
       status
     }
   }

@@ -41,7 +41,7 @@ const todosSlice = createSlice({
       state.isTodosLoading = true
     })
     addCase(postTodo.fulfilled, (state: TodosState, { payload }) => {
-      state.todosList.push(payload.newTodo)
+      state.todosList = [...state.todosList, payload.newTodo]
       state.isTodosLoading = false
     })
     addCase(postTodo.rejected, (state: TodosState) => {
@@ -61,15 +61,17 @@ const todosSlice = createSlice({
       state.isTodosLoading = true
     })
     addCase(updateTodo.fulfilled, (state: TodosState, { payload }) => {
-      state.todosList = state.todosList.map((todo) => {
-        if (todo.id === payload.id) {
-          return {
-            ...todo,
-            payload,
+      state.todosList = [
+        ...state.todosList.map((todo) => {
+          if (todo.id === payload.id) {
+            return {
+              ...todo,
+              ...payload,
+            }
           }
-        }
-        return todo
-      })
+          return todo
+        }),
+      ]
       state.isTodosLoading = false
     })
     addCase(updateTodo.rejected, (state: TodosState) => {

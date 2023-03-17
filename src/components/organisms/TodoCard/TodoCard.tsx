@@ -36,10 +36,13 @@ const StyledDate = styled.div`
 
 export const TodoCard: FC<TodoListInterface> = ({ id, title, description, createdAt, status }): ReactElement => {
   const dispatch = useAppDispatch(deleteTodo)
+
   const onCheckClick = (): void => {
     dispatch(
       updateTodo({
         id,
+        title,
+        description,
         status: 'Completed',
       }),
     )

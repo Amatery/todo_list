@@ -16,8 +16,10 @@ export const todoListRequests = {
   async todoDelete(id: string): Promise<AxiosResponse> {
     return await axiosInstance.delete(compile(endpoints.todo)({ id }))
   },
-  async todoUpdate(id: string, status: string) {
+  async todoUpdate(id: string, title: string, description: string, status: string) {
     return await axiosInstance.put(compile(endpoints.todo)({ id }), {
+      title,
+      description,
       status,
     })
   },
