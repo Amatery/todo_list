@@ -7,7 +7,11 @@ import { Card } from 'antd'
 import { EditOutlined, DeleteOutlined, CheckOutlined } from '@ant-design/icons'
 import { parseISO } from 'date-fns'
 import { CardMeta } from 'components/atoms/CardMeta/CardMeta'
-import { selectedTodoId, isUpdateModalOpen, isTodoListLoading } from 'store/todoSlice/todo.selectors'
+import {
+  selectedTodoId,
+  isUpdateModalOpen,
+  isTodoListUpdating
+} from 'store/todoSlice/todo.selectors'
 import { getSelectedTodoId, toggleDeleteModal, toggleUpdateTodoModal } from 'store/todoSlice/todo.slice'
 import { deleteTodo, updateTodo } from 'store/todoSlice/todo.thunks'
 import { TodoListInterface } from 'types/types'
@@ -44,7 +48,7 @@ export const TodoCard: FC<TodoListInterface> = ({ id, title, description, create
   const todoId = useAppSelector(selectedTodoId)
   const isModalOpen = useAppSelector(isUpdateModalOpen)
   const parsedDate = parseISO(createdAt).toDateString()
-  const isLoading = useAppSelector(isTodoListLoading)
+  const isLoading = useAppSelector(isTodoListUpdating)
 
   const onCheckClick = (): void => {
     dispatch(

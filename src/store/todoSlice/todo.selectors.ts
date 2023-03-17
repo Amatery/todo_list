@@ -12,6 +12,10 @@ export const isTodoListLoading = (state: RootState): boolean => {
   return state.todos.isTodosLoading
 }
 
+export const isTodoListUpdating = (state: RootState): boolean => {
+  return state.todos.isTodoListUpdating
+}
+
 export const isCreateModalOpen = (state: RootState): boolean => {
   return state.todos.isCreateModalOpen
 }

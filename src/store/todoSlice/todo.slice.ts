@@ -9,6 +9,7 @@ export interface TodosState {
   isCreateModalOpen: boolean;
   isUpdateModalOpen: boolean;
   isDeleteModalOpen: boolean;
+  isTodoListUpdating: boolean,
 }
 
 const initialState: TodosState = {
@@ -18,6 +19,7 @@ const initialState: TodosState = {
   isCreateModalOpen: false,
   isUpdateModalOpen: false,
   isDeleteModalOpen: false,
+  isTodoListUpdating: false
 }
 const todosSlice = createSlice({
   name: 'todos',
@@ -48,27 +50,27 @@ const todosSlice = createSlice({
       state.isTodosLoading = false
     })
     addCase(postTodo.pending, (state: TodosState) => {
-      state.isTodosLoading = true
+      state.isTodoListUpdating = true
     })
     addCase(postTodo.fulfilled, (state: TodosState, { payload }) => {
       state.todosList = [...state.todosList, payload.newTodo]
-      state.isTodosLoading = false
+      state.isTodoListUpdating = false
     })
     addCase(postTodo.rejected, (state: TodosState) => {
-      state.isTodosLoading = false
+      state.isTodoListUpdating = false
     })
     addCase(deleteTodo.pending, (state: TodosState) => {
-      state.isTodosLoading = true
+      state.isTodoListUpdating = true
     })
     addCase(deleteTodo.fulfilled, (state: TodosState, { payload }) => {
       state.todosList = state.todosList.filter((t) => t.id !== payload.todoId)
-      state.isTodosLoading = false
+      state.isTodoListUpdating = false
     })
     addCase(deleteTodo.rejected, (state: TodosState) => {
-      state.isTodosLoading = false
+      state.isTodoListUpdating = false
     })
     addCase(updateTodo.pending, (state: TodosState) => {
-      state.isTodosLoading = true
+      state.isTodoListUpdating = true
     })
     addCase(updateTodo.fulfilled, (state: TodosState, { payload }) => {
       state.todosList = [
@@ -82,10 +84,10 @@ const todosSlice = createSlice({
           return todo
         }),
       ]
-      state.isTodosLoading = false
+      state.isTodoListUpdating = false
     })
     addCase(updateTodo.rejected, (state: TodosState) => {
-      state.isTodosLoading = false
+      state.isTodoListUpdating = false
     })
   },
 })
