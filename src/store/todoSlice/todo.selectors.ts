@@ -5,7 +5,7 @@ export const todoListSelector = (state: RootState): TodoListInterface[] => {
   return state.todos.todosList
 }
 
-export const selectedTodoId = (state: RootState): string | null => {
+export const selectedTodoId = (state: RootState): string => {
   return state.todos.selectedTodoId
 }
 export const isTodoListLoading = (state: RootState): boolean => {
@@ -18,4 +18,8 @@ export const isCreateModalOpen = (state: RootState): boolean => {
 
 export const isUpdateModalOpen = (state: RootState): boolean => {
   return state.todos.isUpdateModalOpen
+}
+
+export const isDeleteModalOpen = (state: RootState): boolean => {
+  return state.todos.isDeleteModalOpen
 }

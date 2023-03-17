@@ -1,13 +1,14 @@
-import { UpdateTodoModal } from 'components/organisms/UpdateTodoModal/UpdateTodoModal'
+import { DeleteTodoModal } from 'components/organisms/modals/DeleteTodoModal/DeleteTodoModal'
+import { UpdateTodoModal } from 'components/organisms/modals/UpdateTodoModal/UpdateTodoModal'
+import { useAppDispatch, useAppSelector } from 'hooks/app-hooks'
 import React, { FC, ReactElement } from 'react'
 import styled from 'styled-components'
 import { Card } from 'antd'
 import { EditOutlined, DeleteOutlined, CheckOutlined } from '@ant-design/icons'
 import { parseISO } from 'date-fns'
 import { CardMeta } from 'components/atoms/CardMeta/CardMeta'
-import { useAppDispatch, useAppSelector } from 'hooks/app-hooks'
-import { selectedTodoId, isUpdateModalOpen } from 'store/todoSlice/todo.selectors'
-import { getSelectedTodoId, toggleUpdateTodoModal } from 'store/todoSlice/todo.slice'
+import { selectedTodoId, isUpdateModalOpen, isTodoListLoading } from 'store/todoSlice/todo.selectors'
+import { getSelectedTodoId, toggleDeleteModal, toggleUpdateTodoModal } from 'store/todoSlice/todo.slice'
 import { deleteTodo, updateTodo } from 'store/todoSlice/todo.thunks'
 import { TodoListInterface } from 'types/types'
 
@@ -43,6 +44,7 @@ export const TodoCard: FC<TodoListInterface> = ({ id, title, description, create
   const todoId = useAppSelector(selectedTodoId)
   const isModalOpen = useAppSelector(isUpdateModalOpen)
   const parsedDate = parseISO(createdAt).toDateString()
+  const isLoading = useAppSelector(isTodoListLoading)
 
   const onCheckClick = (): void => {
     dispatch(
@@ -61,14 +63,15 @@ export const TodoCard: FC<TodoListInterface> = ({ id, title, description, create
   }
 
   const onDeleteClick = (id: string): void => {
-    dispatch(deleteTodo({ id }))
+    dispatch(getSelectedTodoId({ id }))
+    dispatch(toggleDeleteModal())
   }
   return (
     <React.Fragment>
       <StyledCard
+        loading={isLoading}
         bordered={false}
         hoverable
-        cover={<img alt="TODO cover image" src={`${process.env.REACT_APP_TODO_IMAGE}`} />}
         actions={[
           <CheckOutlined key="check" onClick={onCheckClick} />,
           <EditOutlined key="edit" onClick={onEditClick} />,
@@ -80,7 +83,10 @@ export const TodoCard: FC<TodoListInterface> = ({ id, title, description, create
         <StyledDate>Created: {parsedDate}</StyledDate>
       </StyledCard>
       {id === todoId && (
-        <UpdateTodoModal id={id} title={title} description={description} status={status} isOpen={isModalOpen} />
+        <>
+          <UpdateTodoModal id={id} title={title} description={description} status={status} isOpen={isModalOpen} />
+          <DeleteTodoModal id={id} />
+        </>
       )}
     </React.Fragment>
   )

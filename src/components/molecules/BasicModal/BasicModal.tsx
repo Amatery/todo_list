@@ -2,7 +2,7 @@ import React, { FC, ReactElement } from 'react'
 import { Modal } from 'antd'
 
 interface BasicModalProps {
-  title: string;
+  title: string | ReactElement;
   open: boolean;
   onOk: any;
   onCancel: any;
