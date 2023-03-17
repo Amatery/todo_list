@@ -5,20 +5,25 @@ import { toggleCreateTodoModal, toggleUpdateTodoModal } from 'store/todoSlice/to
 import { postTodo, updateTodo } from 'store/todoSlice/todo.thunks'
 import { CreateTodoInterface, UpdateTodoInterface } from 'types/types'
 
-export const useHandleModalForm = (): Array<{
-  onCreateModalCancelClick: () => void; form: FormInstance<any>; onUpdateTodoFormFinish: ({
+interface useHandleModalInterface {
+  onCreateModalCancelClick: () => void
+  form: FormInstance<any>;
+  onUpdateTodoFormFinish: ({
     title,
     description,
     status
-  }: UpdateTodoInterface) => void;
-  onUpdateModalCancelClick: () => void;
+  }: UpdateTodoInterface) => void
+  onUpdateModalCancelClick: () => void
   handleFormChange: () => void;
   disableConfirmButton: boolean;
   onCreateTodoFormFinish: ({
     title,
     description
-  }: CreateTodoInterface) => void; onOkClick: () => void
-}> => {
+  }: CreateTodoInterface) => void;
+  onOkClick: () => void
+}
+
+export const useHandleModalForm = (): useHandleModalInterface[] => {
   const [form] = Form.useForm()
   const dispatch = useAppDispatch()
   const [disableConfirmButton, setDisableConfirmButton] = useState(false)
